@@ -18,7 +18,10 @@ from django.contrib import admin
 from django.urls import path
 from lightningapp import views
 
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('index/', views.index, name='index'),
+    path('plot-lightning/', views.plot_lightning, name='plot_lightning'),
 ]
