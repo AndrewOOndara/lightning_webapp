@@ -1,0 +1,2 @@
+lightning_webapp/data/lc_lightning_mm.npy filter=lfs diff=lfs merge=lfs -text
+*.npy filter=lfs diff=lfs merge=lfs -text
