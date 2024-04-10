@@ -20,27 +20,23 @@ FAMOUS = "FAMOUS"
 LOVECLIM = "LOVECLIM"
 
 # REPLACE WITH PATH TO FILE WITH NPY FILES
-pathToData = "/lightning_webapp/data/"
+pathToData = "/Users/andrewondara/lightning-webapp/lightning_webapp/data/"
 # [variable, latitude, longitude, time]
 dataset_files_loveclm = [
-    np.load(pathToData + 'lc_lightning_mm.npy'),
-    np.load(pathToData + 'lc_lat.npy'),
-    np.load(pathToData + 'lc_lon.npy'),
-    np.load(pathToData + 'lc_time_kaBP.npy')
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_rolling_avg_with_latlon.npy'),
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/lc_time_rolling')
 ]
 
 dataset_files_trace = [
-    np.load(pathToData + 'tr_lightning_mm.npy'),
-    np.load(pathToData + 'tr_lat.npy'),
-    np.load(pathToData + 'tr_lon.npy'),
-    np.load(pathToData + 'tr_time_kaBP.npy')
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/tr_rolling_avg_with_latlon'),
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/tr_time_rolling')
 ]
 
 dataset_files_famous = [
-    np.load(pathToData + 'fa_lightning_mm.npy'),
-    np.load(pathToData + 'fa_lat.npy'),
-    np.load(pathToData + 'fa_lon.npy'),
-    np.load(pathToData + 'fa_time_kaBP.npy')
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_rolling_avg_with_latlon'),
+    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_time_rolling')
+
+    //
 ]
 
 dataset_files_list = {
