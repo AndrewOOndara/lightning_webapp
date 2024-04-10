@@ -20,23 +20,33 @@ FAMOUS = "FAMOUS"
 LOVECLIM = "LOVECLIM"
 
 # REPLACE WITH PATH TO FILE WITH NPY FILES
-pathToData = "/Users/andrewondara/lightning-webapp/lightning_webapp/data/"
+# Get the current directory of the script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the absolute path to your file
+file_path = os.path.join(current_dir, 'data')
+print(file_path)
 # [variable, latitude, longitude, time]
 dataset_files_loveclm = [
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_rolling_avg_with_latlon.npy'),
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/lc_time_rolling')
+    np.load(file_path + '/lc_rolling_avg_with_latlon.npy'),
+    np.load(file_path + '/lc_lat.npy'),
+    np.load(file_path + '/lc_lon.npy'),
+    np.load(file_path + '/lc_time_rolling.npy')
 ]
+#lightningapp/data/fa_lat.npy
 
 dataset_files_trace = [
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/tr_rolling_avg_with_latlon'),
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/tr_time_rolling')
+    np.load(file_path + '/tr_rolling_avg_with_latlon.npy'),
+    np.load(file_path + '/tr_lat.npy'),
+    np.load(file_path + '/tr_lon.npy'),
+    np.load(file_path + '/tr_time_rolling.npy')
 ]
 
 dataset_files_famous = [
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_rolling_avg_with_latlon'),
-    np.load('/Users/andrewondara/lightning-webapp/lightning_webapp/lightning_webapp/data/fa_time_rolling')
-
-    //
+    np.load(file_path + '/fa_rolling_avg_with_latlon.npy'),
+    np.load(file_path + '/fa_lat.npy'),
+    np.load(file_path + '/fa_lon.npy'),
+    np.load(file_path + '/fa_time_rolling.npy')
 ]
 
 dataset_files_list = {
@@ -65,6 +75,7 @@ def plot_lightning(request):
                 lon = dataset_files[2]
                 time = dataset_files[3]
 
+                print(var.shape)
                 lat_idx = np.argmin(np.abs(lat - lat_point))
                 lon_idx = np.argmin(np.abs(lon - lon_point))
 
@@ -83,14 +94,18 @@ def plot_lightning(request):
             plt.show()
 
             # Save the plot to a file
-            plot_file_path = '/lightning-webapp/lightning_webapp/lightningapp/static/plots/plot.png'
+        
+
+            # Construct the absolute path to your file
+            png_file_path = os.path.join(current_dir, 'static','plots')
+            plot_file_path = png_file_path + '/plots.png'
             plt.savefig(plot_file_path)
 
             # Close the plot to prevent memory leaks
             plt.close()
 
             # Render the template with the plot
-            template = loader.get_template('/lightning-webapp/lightning_webapp/lightningapp/templates/index.html')
+            template = loader.get_template('/Users/andrewondara/lightning-webapp/lightning_webapp/lightningapp/templates/index.html')
             context = {'plot_file_path': plot_file_path}
             return HttpResponse(template.render(context, request))
         elif dataset in dataset_files_list:
@@ -112,23 +127,29 @@ def plot_lightning(request):
                 return
 
             plt.figure(figsize=(10, 6))
-            plt.plot(time, var[:, lat_idx, lon_idx], marker='o')
+            plt.plot(time, var, marker='o')
             plt.xlabel('Time')
             plt.ylabel('Lightning')
+            # plt.title(f'{dataset}: Time series of Lightning at Lat: {lat_point}, Lon: {lon_point}')
             plt.title(f'{dataset}: Time series of Lightning at Lat: {lat_point}, Lon: {lon_point}')
             plt.grid(True)
             plt.tight_layout()
             plt.show()
 
             # Save the plot to a file
-            plot_file_path = '/lightning-webapp/lightning_webapp/lightningapp/static/plots/plot.png'
+            png_file_path = os.path.join(current_dir, 'static','plots')
+            plot_file_path = png_file_path + '/plots.png'
             plt.savefig(plot_file_path)
 
             # Close the plot to prevent memory leaks
             plt.close()
 
             # Render the template with the plot
-            template = loader.get_template('/lightning-webapp/lightning_webapp/lightningapp/templates/index.html')
+            # Construct the absolute path to your template file
+            template_path = os.path.join(current_dir, 'templates', 'index.html')
+
+            # Load the template using the absolute path
+            template = loader.get_template(template_path)
             context = {'plot_file_path': plot_file_path}
             return HttpResponse(template.render(context, request))
 
