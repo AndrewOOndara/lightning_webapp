@@ -1,3 +1,5 @@
+import zipfile
+import pandas as pd 
 from django.shortcuts import render
 import netCDF4
 import numpy as np
@@ -11,6 +13,17 @@ import scipy.io as sio
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
+def contact(request):
+    return render(request, 'contact.html')
+
+def create_plot(request):
+    return render(request, 'create_plot.html')
+
+def about(request):
+    return render(request, 'about.html')
+
+def home(request):
+    return render(request, 'home.html')
 
 def index(request):
     return render(request, 'index.html')
@@ -83,7 +96,7 @@ def plot_lightning(request):
                     print(f"Error: Latitude or longitude values are out of bounds for the dataset {key}. Skipping.")
                     continue
 
-                plt.plot(time, var[:, lat_idx, lon_idx], label=f'{key}')
+                plt.plot(time, var[:, lat_idx, lon_idx].flatten(), label=f'{key}')
 
             plt.xlabel('Time')
             plt.ylabel('Lightning')
@@ -127,26 +140,31 @@ def plot_lightning(request):
                 return
 
             plt.figure(figsize=(10, 6))
-            plt.plot(time, var, marker='o')
+            plt.plot(time, var[:, lat_idx, lon_idx], marker='o')
             plt.xlabel('Time')
             plt.ylabel('Lightning')
             # plt.title(f'{dataset}: Time series of Lightning at Lat: {lat_point}, Lon: {lon_point}')
             plt.title(f'{dataset}: Time series of Lightning at Lat: {lat_point}, Lon: {lon_point}')
             plt.grid(True)
             plt.tight_layout()
-            plt.show()
+
 
             # Save the plot to a file
             png_file_path = os.path.join(current_dir, 'static','plots')
             plot_file_path = png_file_path + '/plots.png'
             plt.savefig(plot_file_path)
+            # Save the data to a CSV file
+            data = np.column_stack((time, var[:, lat_idx, lon_idx]))
+            csv_file_path = os.path.join(current_dir, 'static', 'csv')
+            data_file_path = os.path.join(csv_file_path, 'data.csv')
+            np.savetxt(data_file_path, data, delimiter=',')
 
             # Close the plot to prevent memory leaks
             plt.close()
 
             # Render the template with the plot
             # Construct the absolute path to your template file
-            template_path = os.path.join(current_dir, 'templates', 'index.html')
+            template_path = os.path.join(current_dir, 'templates', 'create_plot.html')
 
             # Load the template using the absolute path
             template = loader.get_template(template_path)
@@ -157,3 +175,19 @@ def plot_lightning(request):
             return HttpResponseBadRequest("Invalid dataset name")
         
     return HttpResponseBadRequest()
+
+def export_data(request):
+    if request.method == 'POST':
+    
+        response = HttpResponse(content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="plot_and_data.zip"'
+        plot_file_path = os.path.join(current_dir, 'static', 'plots', 'plots.png')
+        data_file_path = os.path.join(current_dir, 'static', 'csv', 'data.csv')
+
+        with zipfile.ZipFile(response, 'w') as zipf:
+            zipf.write(plot_file_path, arcname='plots.png')
+            zipf.write(data_file_path, arcname='data.csv')
+
+        return response
+    else:
+        return HttpResponseBadRequest("Invalid request method")
