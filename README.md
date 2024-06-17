@@ -53,37 +53,13 @@ Once the server is running, you can access various features of the application:
 - **Data Filters**: Use the filtering options to narrow down the data by date, location, and other criteria.
 - **Correlation Analysis**: View analysis results showing the correlation between lightning activity and wildfire occurrences.
 
-## Contributing
-
-We welcome contributions from the community. If you have suggestions, bug fixes, or new features, please create a pull request or open an issue.
-
-1. **Fork the repository**
-2. **Create a new branch**
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-3. **Commit your changes**
-    ```bash
-    git commit -m 'Add some feature'
-    ```
-4. **Push to the branch**
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-5. **Create a new Pull Request**
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
-
-- Special thanks to the research team at [Your Lab's Name](https://www.example.com/lab-website) for their invaluable data and support.
-- Additional thanks to all contributors and the open-source community.
-
 ## Contact
 
-For any inquiries or feedback, please contact [Andrew Ondara](mailto:your-email@example.com).
+For any inquiries or feedback, please contact [Andrew Ondara](mailto:your-email@example.com) or [Saloni Dhal](mailto:your-email@example.com).
 
 ---
 
